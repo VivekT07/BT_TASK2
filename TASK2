@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_POSITION 100
+#define DICE_SIDES 6
+
+// Function to simulate dice roll
+int rollDice() {
+    return (rand() % DICE_SIDES) + 1;
+}
+
+// Function to check for snakes or ladders
+int checkSnakesLadders(int position) {
+    // Ladders
+    if (position == 3) return 22;
+    if (position == 5) return 8;
+    if (position == 11) return 26;
+    if (position == 20) return 29;
+    // Snakes
+    if (position == 17) return 4;
+    if (position == 19) return 7;
+    if (position == 21) return 9;
+    if (position == 27) return 1;
+
+    return position;
+}
+
+int main() {
+    int player1 = 0, player2 = 0;
+    int currentPlayer = 1;
+    int diceRoll, newPosition;
+
+    srand(time(NULL)); // Seed for random number generation
+
+    while (1) {
+        printf("Player %d's turn. Press Enter to roll the dice...\n", currentPlayer);
+        getchar();
+
+        diceRoll = rollDice();
+        printf("Player %d rolled a %d\n", currentPlayer, diceRoll);
+
+        if (currentPlayer == 1) {
+            player1 += diceRoll;
+            player1 = checkSnakesLadders(player1);
+            if (player1 > MAX_POSITION) player1 = MAX_POSITION - (player1 - MAX_POSITION); // Bounce back if overshoots
+            printf("Player 1 moves to position %d\n", player1);
+            if (player1 == MAX_POSITION) {
+                printf("Player 1 wins!\n");
+                break;
+            }
+        } else {
+            player2 += diceRoll;
+            player2 = checkSnakesLadders(player2);
+            if (player2 > MAX_POSITION) player2 = MAX_POSITION - (player2 - MAX_POSITION); // Bounce back if overshoots
+            printf("Player 2 moves to position %d\n", player2);
+            if (player2 == MAX_POSITION) {
+                printf("Player 2 wins!\n");
+                break;
+            }
+        }
+
+        currentPlayer = (currentPlayer % 2) + 1; // Switch player
+    }
+
+    return 0;
+}
