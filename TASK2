@@ -4,7 +4,7 @@
 
 #define MAX_POSITION 100
 #define DICE_SIDES 6
-
+//khkjj
 // Function to simulate dice roll
 int rollDice() {
     return (rand() % DICE_SIDES) + 1;
